@@ -25,7 +25,6 @@ use RunBB\Core\Random;
 
 abstract class View extends Collection implements ViewInterface
 {
-    protected $directories = [];
     protected $templates = [];
     protected $assets = [];
     protected $validation = [
