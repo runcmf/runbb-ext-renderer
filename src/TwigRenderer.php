@@ -15,8 +15,8 @@ class TwigRenderer extends View
     public $loader = null;
 
     /**
-    * Constructor
-    */
+     * TwigRenderer constructor.
+     */
     public function __construct()
     {
         parent::__construct();

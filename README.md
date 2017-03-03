@@ -1,5 +1,8 @@
 # RunBB forum Renderer plugin
 
+Twig, php renderers   
+TODO pdf
+
 ## Install
 1.
 ```php

@@ -88,11 +88,6 @@ abstract class View extends Collection implements ViewInterface
         $this->addTemplatesDirectory($templatesDir);
     }
 
-//    public function getStyle()
-//    {
-//        return $this->get('style');
-//    }
-
     public function setPageInfo(array $data)
     {
         foreach ($data as $key => $value) {
@@ -101,11 +96,6 @@ abstract class View extends Collection implements ViewInterface
         }
         return $this;
     }
-
-//    public function getPageInfo()
-//    {
-//        return $this->all();
-//    }
 
     protected function validate($key, $value)
     {
@@ -209,7 +199,6 @@ abstract class View extends Collection implements ViewInterface
             'fid' => null,
             'pid' => null,
             'tid' => null,
-//            'assets' => $this->getAssets(),
             'assets' => $this->assets,
             'languagesQSelect' => Lang::getList(),
             'stylesQSelect' => \RunBB\Core\Lister::getStyles(),
