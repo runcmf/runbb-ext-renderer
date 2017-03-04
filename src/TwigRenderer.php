@@ -24,7 +24,7 @@ class TwigRenderer extends View
         $this->loader = new \Twig_Loader_Filesystem();
         $this->twig = new \Twig_Environment($this->loader, [
             'cache' => ForumEnv::get('FORUM_CACHE_DIR') . 'twig',
-            'debug' => true,
+            'debug' => ForumEnv::get('FEATHER_DEBUG'),
         ]);
         // load extensions
         if (ForumEnv::get('FEATHER_DEBUG')) {
@@ -50,24 +50,28 @@ class TwigRenderer extends View
     }
 
     /**
+     * @param string $template
+     * @param bool $nested
+     * @return string
+     */
+    public function render($template = '', $nested = true)
+    {
+        $data = $this->getPageData();
+        $data['nested'] = $nested;
+        $data = Container::get('hooks')->fire('view.alter_data', $data);
+
+        return $this->twig->render($template . '.html.twig', $data);
+    }
+
+    /**
+     * @param string $template
      * @param bool $nested
      * @return mixed
      */
-    public function display($nested = true)
+    public function display($template = '', $nested = true)
     {
-        $data = [
-            'nested' => $nested
-        ];
-        $data = array_merge($this->getDefaultPageInfo(), $this->all(), (array) $data);
-        $data = Container::get('hooks')->fire('view.alter_data', $data);
-
-        // TODO set template to display method?
-        $templates = $this->getTemplates();
-        $tpl = trim(array_pop($templates));// get last in array
-
-
         Response::getBody()->write(
-            $this->twig->render($tpl. '.html.twig', $data)
+            $this->render($template, $nested)
         );
         return Container::get('response');
     }

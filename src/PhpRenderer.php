@@ -65,23 +65,17 @@ class PhpRenderer extends View
     }
 
     /**
+     * @param string $template
      * @param bool $nested
-     * @return mixed
+     * @return array|string
      * @throws \Exception
      * @throws \Throwable
      */
-    public function display($nested = true)
+    public function render($template = '', $nested = true)
     {
-        $data = [
-//            'nested' => $nested
-        ];
-        $data = array_merge($this->getDefaultPageInfo(), $this->all(), (array) $data);
-
+        $data = $this->getPageData();
         $data = Container::get('hooks')->fire('view.alter_data', $data);
-
-        $templates = $this->getTemplates();
-        $tpl = trim(array_pop($templates));// get last in array
-        list($namespace, $shortname) = $this->parseName($tpl);
+        list($namespace, $shortname) = $this->parseName($template);
 //dump($namespace);
         try {
             ob_start();
@@ -102,7 +96,19 @@ class PhpRenderer extends View
             throw $e;
         }
 
-        Response::getBody()->write($output);
+        return $output;
+    }
+
+    /**
+     * @param string $template
+     * @param bool $nested
+     * @return mixed
+     */
+    public function display($template = '', $nested = true)
+    {
+        Response::getBody()->write(
+            $this->render($nested)
+        );
         return Container::get('response');
     }
 

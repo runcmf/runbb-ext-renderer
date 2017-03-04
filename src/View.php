@@ -132,30 +132,30 @@ abstract class View extends Collection implements ViewInterface
 //        return $this->assets;
 //    }
 
-    public function addTemplate($tpl, $priority = 10)
-    {
-        $tpl = (array) $tpl;
-        foreach ($tpl as $key => $tpl_file) {
-            $this->templates[(int) $priority][] = (string) $tpl_file;
-        }
-        return $this;
-    }
+//    public function addTemplate($tpl, $priority = 10)
+//    {
+//        $tpl = (array) $tpl;
+//        foreach ($tpl as $key => $tpl_file) {
+//            $this->templates[(int) $priority][] = (string) $tpl_file;
+//        }
+//        return $this;
+//    }
 
-    public function getTemplates()
-    {
-        $output = [];
-        if (count($this->templates) > 1) {
-            ksort($this->templates);
-        }
-        foreach ($this->templates as $priority) {
-            if (!empty($priority)) {
-                foreach ($priority as $tpl) {
-                    $output[] = $tpl;
-                }
-            }
-        }
-        return $output;
-    }
+//    public function getTemplates()
+//    {
+//        $output = [];
+//        if (count($this->templates) > 1) {
+//            ksort($this->templates);
+//        }
+//        foreach ($this->templates as $priority) {
+//            if (!empty($priority)) {
+//                foreach ($priority as $tpl) {
+//                    $output[] = $tpl;
+//                }
+//            }
+//        }
+//        return $output;
+//    }
 
     public function addMessage($msg, $type = 'info')
     {
@@ -166,7 +166,7 @@ abstract class View extends Collection implements ViewInterface
         }
     }
 
-    public function getDefaultPageInfo()
+    public function getPageData()
     {
         // Check if config file exists to avoid error when installing forum
         if (!Container::get('cache')->isCached('quickjump') && is_file(ForumEnv::get('FORUM_CONFIG_FILE'))) {
@@ -237,6 +237,8 @@ abstract class View extends Collection implements ViewInterface
                 $data['exec_info'] = \RunBB\Model\Debug::getInfo();
             }
         }
+        $data = array_merge($data, $this->all());
+
         $data['pageTitle'] = Utils::generatePageTitle($data['title'], $data['page_number']);
         $data['navlinks'] = $this->buildNavLinks($data['active_page']);
 
