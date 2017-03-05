@@ -60,7 +60,10 @@ class TwigRenderer extends View
         $data['nested'] = $nested;
         $data = Container::get('hooks')->fire('view.alter_data', $data);
 
-        return $this->twig->render($template . '.html.twig', $data);
+        $startTime = microtime(true);
+        $ret = $this->twig->render($template . '.html.twig', $data);
+        $this->renderTime = microtime(true) - $startTime;
+        return $ret;
     }
 
     /**
@@ -73,6 +76,10 @@ class TwigRenderer extends View
         Response::getBody()->write(
             $this->render($template, $nested)
         );
+        // Check Tracy installed
+        if(function_exists('bdump')) {
+            bdump('Twig render time: '.$this->renderTime);
+        }
         return Container::get('response');
     }
 }

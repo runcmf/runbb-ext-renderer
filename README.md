@@ -1,12 +1,11 @@
 # RunBB forum Renderer plugin
 
-Twig, php renderers   
-TODO pdf
+[Twig](https://github.com/twigphp/Twig), [Femon](https://github.com/fenom-template/fenom) and PHP renderers   
 
 ## Install
 1.
 ```php
-$ composer require runcmf/runbb-ext-renderer:dev-master
+$ composer require runcmf/runbb-ext-renderer
 ```
 
 ---

@@ -25,6 +25,9 @@ use RunBB\Core\Random;
 
 abstract class View extends Collection implements ViewInterface
 {
+    const MAIN_NAMESPACE = '__main__';
+    public $renderTime = 0;
+
     protected $templates = [];
     protected $assets = [];
     protected $validation = [
@@ -333,5 +336,30 @@ abstract class View extends Collection implements ViewInterface
         }
 
         return $navlinks;
+    }
+
+    /**
+     * Twig function
+     *
+     * @param $name
+     * @param string $default
+     * @return array
+     * @throws \RunBB\Exception\RunBBException
+     */
+    protected function parseName($name, $default = self::MAIN_NAMESPACE)
+    {
+        if (isset($name[0]) && '@' == $name[0]) {
+            if (false === $pos = strpos($name, '/')) {
+                throw new \RunBB\Exception\RunBBException(
+                    sprintf('Malformed namespaced template name "%s" (expecting "@namespace/template_name").', $name)
+                );
+            }
+            $namespace = substr($name, 1, $pos - 1);
+            $shortname = substr($name, $pos + 1);
+
+            return array($namespace, $shortname);
+        }
+
+        return array($default, $name);
     }
 }

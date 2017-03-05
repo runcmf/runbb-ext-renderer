@@ -17,7 +17,6 @@
 
 namespace BBRenderer;
 
-
 class PdfRenderer extends View
 {
     public function __construct(array $items = [])
@@ -30,7 +29,12 @@ class PdfRenderer extends View
         // TODO
     }
 
-    public function display($nested = true)
+    public function render($template = '', $nested = true)
+    {
+        // TODO
+    }
+
+    public function display($template = '', $nested = true)
     {
         // TODO
     }

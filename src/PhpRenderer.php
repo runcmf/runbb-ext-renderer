@@ -19,8 +19,6 @@ namespace BBRenderer;
 
 class PhpRenderer extends View
 {
-    const MAIN_NAMESPACE = '__main__';
-
     protected $directories = [];
     protected $alias;
 
@@ -80,6 +78,7 @@ class PhpRenderer extends View
         try {
             ob_start();
             extract($data);
+            $startTime = microtime(true);
             if ($nested) {
                 include $this->getTemplate('header');
             }
@@ -87,6 +86,7 @@ class PhpRenderer extends View
             if ($nested) {
                 include $this->getTemplate('footer');
             }
+            $this->renderTime = microtime(true) - $startTime;
             $output = ob_get_clean();
         } catch(\Throwable $e) { // PHP 7+
             ob_end_clean();
@@ -107,33 +107,12 @@ class PhpRenderer extends View
     public function display($template = '', $nested = true)
     {
         Response::getBody()->write(
-            $this->render($nested)
+            $this->render($template, $nested)
         );
-        return Container::get('response');
-    }
-
-    /**
-     * Twig function
-     *
-     * @param $name
-     * @param string $default
-     * @return array
-     * @throws \RunBB\Exception\RunBBException
-     */
-    protected function parseName($name, $default = self::MAIN_NAMESPACE)
-    {
-        if (isset($name[0]) && '@' == $name[0]) {
-            if (false === $pos = strpos($name, '/')) {
-                throw new \RunBB\Exception\RunBBException(
-                    sprintf('Malformed namespaced template name "%s" (expecting "@namespace/template_name").', $name)
-                );
-            }
-            $namespace = substr($name, 1, $pos - 1);
-            $shortname = substr($name, $pos + 1);
-
-            return array($namespace, $shortname);
+        // Check Tracy installed
+        if(function_exists('bdump')) {
+            bdump('PHP render time: '.$this->renderTime);
         }
-
-        return array($default, $name);
+        return Container::get('response');
     }
 }
