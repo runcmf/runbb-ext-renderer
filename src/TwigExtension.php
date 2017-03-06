@@ -206,11 +206,19 @@ class TwigExtension extends \Twig_Extension
             }, ['is_safe' => ['html']]),
 
             /**
-             * Menu Builde
+             * Menu Builder
              * return rendered menu
              */
             new \Twig_SimpleFunction('renderMenu', function ($name, $tag = 'ul', $option) {
                 return Menu::render($name, $tag, $option);
+            }, ['is_safe' => ['html']]),
+
+            /**
+             * json_decode
+             * return decoded array
+             */
+            new \Twig_SimpleFunction('jsonDecode', function ($val) {
+                return json_decode($val, true);
             }, ['is_safe' => ['html']]),
         ];
     }
