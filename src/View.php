@@ -215,7 +215,7 @@ abstract class View extends Collection implements ViewInterface
                 $data['has_reports'] = \RunBB\Model\Admin\Reports::hasReports();
             }
             // check db configured
-            if (DB::getConfig()['username'] !== null) {
+            if (DB::getConfig()['username'] !== null && User::get()->g_id == ForumEnv::get('FEATHER_GUEST')) {
                 // guest user. for modal. load reg data from Register.php
                 Lang::load('login');
                 Lang::load('register');
