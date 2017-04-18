@@ -27,7 +27,7 @@ class TwigRenderer extends View
             'debug' => ForumEnv::get('FEATHER_DEBUG'),
         ]);
         // load extensions
-        if (ForumEnv::get('FEATHER_DEBUG')) {
+        if (ForumEnv::get('FEATHER_DEBUG') && Container::get('twig_profile')) {
             $this->twig->addExtension(new \Twig_Extension_Profiler(
                 Container::get('twig_profile')
             ));
