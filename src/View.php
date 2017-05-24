@@ -230,11 +230,11 @@ abstract class View extends Collection implements ViewInterface
                 $data['index_questions'] = $index_questions;
                 $data['question'] = array_keys($lang_antispam_questions);
                 $data['qencoded'] = md5(array_keys($lang_antispam_questions)[$index_questions]);
-                $data['logOutLink'] = Router::pathFor(
-                    'logout',
-                    ['token' => Random::hash(User::get()->id.Random::hash(Utils::getIp()))]
-                );
             }
+            $data['logOutLink'] = Router::pathFor(
+                'logout',
+                ['token' => Random::hash(User::get()->id.Random::hash(Utils::getIp()))]
+            );
 
             if (ForumEnv::get('FEATHER_SHOW_INFO')) {
                 $data['exec_info'] = \RunBB\Model\Debug::getInfo();
